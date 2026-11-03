@@ -1,0 +1,57 @@
+name: Branch Based CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+          python --version
+
+      - name: Build Application
+        run: |
+          echo "Building Application"
+          python app.py
+
+      - name: Test Application
+        run: |
+          echo "Running Tests"
+          python test.py
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy Application
+        run: |
+          echo "Deploying Application..."
+          echo "Deployment Successful!"
