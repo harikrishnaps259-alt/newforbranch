@@ -15,7 +15,7 @@ jobs:
     needs: build
     steps:
       - name: Run Tests
-        run: echo "Running tests"
+        run: echo "Running testss"
 
   deploy:
     runs-on: ubuntu-latest
